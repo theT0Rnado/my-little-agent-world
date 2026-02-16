@@ -1,4 +1,4 @@
-package com.thet0rnado.mylittleagentworld.agent_service;
+package com.thet0rnado.mylittleagentworld.agent;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
