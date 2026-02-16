@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { AgentCard } from './AgentCard';
 import { ControlPanel } from './ControlPanel';

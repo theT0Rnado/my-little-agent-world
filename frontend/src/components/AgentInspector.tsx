@@ -7,7 +7,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSimulationStore } from '@/stores/simulationStore';
 import { getMoodColor, getMoodEmoji } from '@/lib/utils';
 import { Brain, Heart, Target, Users } from 'lucide-react';
@@ -22,12 +22,15 @@ export function AgentInspector() {
     (r) => r.source === agent.id || r.target === agent.id
   );
 
+  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${agent.name}`;
+
   return (
     <Drawer open={!!selectedAgentId} onOpenChange={(open) => !open && selectAgent(null)}>
       <DrawerContent className="bg-slate-900 border-slate-700 max-h-[85vh]">
         <DrawerHeader className="border-b border-slate-700">
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16 border-2 border-cyan-400">
+              <AvatarImage src={avatarUrl} alt={agent.name} />
               <AvatarFallback className="bg-slate-800 text-cyan-400 text-xl font-bold">
                 {agent.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
@@ -109,6 +112,7 @@ export function AgentInspector() {
 
                   const isPositive = rel.value > 0;
                   const strength = Math.abs(rel.value);
+                  const otherAvatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${otherAgent.name}`;
 
                   return (
                     <div
@@ -117,6 +121,7 @@ export function AgentInspector() {
                     >
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
+                          <AvatarImage src={otherAvatarUrl} alt={otherAgent.name} />
                           <AvatarFallback className="bg-slate-700 text-xs">
                             {otherAgent.name.slice(0, 2).toUpperCase()}
                           </AvatarFallback>

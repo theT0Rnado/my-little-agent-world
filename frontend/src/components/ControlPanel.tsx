@@ -3,8 +3,32 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
-import { Play, Pause, Zap, Globe } from 'lucide-react';
+import { Play, Pause, Zap, Globe, Sparkles } from 'lucide-react';
 import { useSimulationStore } from '@/stores/simulationStore';
+
+const randomMessages = [
+  'Исследую окрестности...',
+  'Нашёл что-то интересное!',
+  'Размышляю о смысле жизни',
+  'Пытаюсь понять других агентов',
+  'Создаю новый план действий',
+  'Отдыхаю и набираюсь сил',
+  'Делюсь своими мыслями',
+  'Наблюдаю за происходящим'
+];
+
+const randomGlobalEvents = [
+  '🌟 Найден древний артефакт!',
+  '🌧️ Начался дождь',
+  '☀️ Наступил новый день',
+  '🎉 Праздник в деревне!',
+  '⚠️ Приближается буря',
+  '🌙 Наступила ночь',
+  '🎨 Кто-то создал произведение искусства',
+  '💫 Падающая звезда пролетела по небу',
+  '🔥 Разожжён костёр для собрания',
+  '🎵 Слышна музыка вдалеке'
+];
 
 export function ControlPanel() {
   const [message, setMessage] = useState('');
@@ -26,18 +50,22 @@ export function ControlPanel() {
   };
 
   const handleGlobalEvent = () => {
-    const events = [
-      '🌟 Найден древний артефакт!',
-      '🌧️ Начался дождь',
-      '☀️ Наступил новый день',
-      '🎉 Праздник в деревне!',
-      '⚠️ Приближается буря'
-    ];
-    
-    const randomEvent = events[Math.floor(Math.random() * events.length)];
+    const randomEvent = randomGlobalEvents[Math.floor(Math.random() * randomGlobalEvents.length)];
     addEvent({
       type: 'global',
       message: randomEvent
+    });
+  };
+
+  const handleRandomAction = () => {
+    const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+    const randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+    
+    addEvent({
+      type: Math.random() > 0.5 ? 'thought' : 'action',
+      agentId: randomAgent.id,
+      agentName: randomAgent.name,
+      message: randomMessage
     });
   };
 
@@ -94,6 +122,16 @@ export function ControlPanel() {
             Отправить
           </Button>
         </div>
+
+        {/* Random Action */}
+        <Button
+          onClick={handleRandomAction}
+          variant="outline"
+          className="border-purple-500 text-purple-400 hover:bg-purple-500/10"
+        >
+          <Sparkles className="h-4 w-4 mr-2" />
+          Случайное
+        </Button>
 
         {/* Global Event */}
         <Button

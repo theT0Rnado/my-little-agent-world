@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getMoodColor, getMoodEmoji } from '@/lib/utils';
 import type { Agent } from '@/types';
 
@@ -12,6 +12,8 @@ interface AgentCardProps {
 }
 
 export function AgentCard({ agent, onClick, isSelected }: AgentCardProps) {
+  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${agent.name}`;
+
   return (
     <motion.div
       whileHover={{ scale: 1.05, y: -2 }}
@@ -28,6 +30,7 @@ export function AgentCard({ agent, onClick, isSelected }: AgentCardProps) {
       >
         <div className="flex items-center gap-3">
           <Avatar className="h-12 w-12 border-2 border-slate-700">
+            <AvatarImage src={avatarUrl} alt={agent.name} />
             <AvatarFallback className="bg-slate-800 text-cyan-400 font-bold">
               {agent.name.slice(0, 2).toUpperCase()}
             </AvatarFallback>
