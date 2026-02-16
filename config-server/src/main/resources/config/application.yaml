@@ -1,0 +1,10 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, env
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
