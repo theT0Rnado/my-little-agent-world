@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thet0rnado.mylittleagentworld</groupId>
-	<artifactId>server-discovery</artifactId>
+	<artifactId>service-discovery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>server-discovery</name>
+	<name>service-discovery</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

@@ -1,10 +1,10 @@
-package com.thet0rnado.mylittleagentworld.server_discovery;
+package com.thet0rnado.mylittleagentworld.service_discovery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerDiscoveryApplicationTests {
+class ServiceDiscoveryApplicationTests {
 
 	@Test
 	void contextLoads() {
