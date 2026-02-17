@@ -13,9 +13,5 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NewsMessage{
     private Long newsId;
-    private String title;
     private String content;
-    private String source;
-    private LocalDateTime publishedAt;
-    private LocalDateTime sentAt;
 }

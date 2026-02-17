@@ -23,7 +23,7 @@ public class NewsProducer {
     public void sendNewsToAiService(NewsMessage newsMessage) {
         try {
             log.info("Sending news to AI service. News ID: {}, Title: {}",
-                    newsMessage.getNewsId(), newsMessage.getTitle());
+                    newsMessage.getNewsId());
 
             rabbitTemplate.convertAndSend(
                     newsExchange,

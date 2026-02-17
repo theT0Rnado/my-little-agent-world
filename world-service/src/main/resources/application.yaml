@@ -5,7 +5,6 @@ spring:
   application:
     name: world-service
 
-  # PostgreSQL Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/world_db
     username: program
@@ -16,7 +15,6 @@ spring:
       minimum-idle: 5
       connection-timeout: 30000
 
-  # JPA Configuration
   jpa:
     hibernate:
       ddl-auto: update
@@ -25,7 +23,6 @@ spring:
       hibernate:
         format_sql: true
 
-  # RabbitMQ Configuration
   rabbitmq:
     host: localhost
     port: 5672
@@ -40,16 +37,14 @@ spring:
           max-attempts: 3
           multiplier: 2.0
 
-# RabbitMQ Custom Configuration
 rabbitmq:
   exchange:
     news: news.exchange
   queue:
-    news-to-ai: news.to.ai.queue
+    news-from-ai: news.from.ai.queue   # ← изменили
   routing-key:
-    news-to-ai: news.to.ai
+    news-from-ai: news.from.ai         # ← изменили
 
-# Actuator
 management:
   endpoints:
     web:
@@ -59,9 +54,8 @@ management:
     health:
       show-details: always
 
-# Logging
 logging:
   level:
-    com.thet0rnado.mylittleagentworld.worldservice: DEBUG
+    com.thet0rnado.mylittleagentworld: DEBUG   # ← исправили пакет
     org.springframework.amqp: INFO
     org.hibernate.SQL: DEBUG

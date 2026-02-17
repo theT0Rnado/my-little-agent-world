@@ -1,12 +1,18 @@
 package com.thet0rnado.mylittleagentworld.world.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -22,38 +28,20 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 500)
-    private String title;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
-
-    @Column(length = 255)
-    private String source;
-
-    @Column(name = "published_at")
-    private LocalDateTime publishedAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    private NewsStatus status = NewsStatus.PENDING;
+    private NewsStatus status = NewsStatus.PROCESSED;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @Column(name = "sent_to_ai_at")
-    private LocalDateTime sentToAiAt;
-
     public enum NewsStatus {
-        PENDING,      // Получена, но еще не отправлена в AI
-        SENT_TO_AI,   // Отправлена в AI service
-        PROCESSED,    // Обработана AI service
-        FAILED        // Ошибка при обработке
+        PROCESSED,
+        FAILED
     }
 }

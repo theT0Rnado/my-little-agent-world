@@ -15,11 +15,11 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.exchange.news}")
     private String newsExchange;
 
-    @Value("${rabbitmq.queue.news-to-ai}")
-    private String newsToAiQueue;
+    @Value("${rabbitmq.queue.news-from-ai}")
+    private String newsFromAiQueue;
 
-    @Value("${rabbitmq.routing-key.news-to-ai}")
-    private String newsToAiRoutingKey;
+    @Value("${rabbitmq.routing-key.news-from-ai}")
+    private String newsFromAiRoutingKey;
 
     @Bean
     public TopicExchange newsExchange() {
@@ -27,19 +27,18 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue newsToAiQueue() {
+    public Queue newsFromAiQueue() {
         return QueueBuilder
-                .durable(newsToAiQueue)
-                .withArgument("x-dead-letter-exchange", newsExchange + ".dlx")
+                .durable(newsFromAiQueue)
                 .build();
     }
 
     @Bean
-    public Binding newsToAiBinding(Queue newsToAiQueue, TopicExchange newsExchange) {
+    public Binding newsFromAiBinding(Queue newsFromAiQueue, TopicExchange newsExchange) {
         return BindingBuilder
-                .bind(newsToAiQueue)
+                .bind(newsFromAiQueue)
                 .to(newsExchange)
-                .with(newsToAiRoutingKey);
+                .with(newsFromAiRoutingKey);
     }
 
     @Bean

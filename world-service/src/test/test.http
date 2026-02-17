@@ -1,0 +1,41 @@
+### Новость 1
+POST http://localhost:8082/api/v1/news
+Content-Type: application/json
+
+{
+  "title": "Новость про технологии",
+  "content": "Apple выпустила новый iPhone",
+  "source": "TechCrunch",
+  "publishedAt": "2026-02-17T10:00:00"
+}
+
+### Новость 2
+POST http://localhost:8082/api/v1/news
+Content-Type: application/json
+
+{
+  "title": "Новость про спорт",
+  "content": "Реал Мадрид выиграл чемпионат",
+  "source": "ESPN",
+  "publishedAt": "2026-02-17T11:00:00"
+}
+
+### Новость 3
+POST http://localhost:8082/api/v1/news
+Content-Type: application/json
+
+{
+  "title": "Новость про науку",
+  "content": "Учёные открыли новую планету",
+  "source": "NASA",
+  "publishedAt": "2026-02-17T12:00:00"
+}
+
+### Получить все новости
+GET http://localhost:8082/api/v1/news
+
+### Получить новость по ID
+GET http://localhost:8082/api/v1/news/3
+
+### Получить по статусу
+GET http://localhost:8082/api/v1/news/status/SENT_TO_AI
