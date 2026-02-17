@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Agent, Event, Relation, SimulationState, Mood } from '@/types';
+import type { Agent, Event, Relation, SimulationState } from '@/types';
 
 // Mock agents
 const mockAgents: Agent[] = [

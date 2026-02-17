@@ -1,17 +1,37 @@
 @import "tailwindcss";
 
 body {
-  @apply bg-slate-950 text-slate-100;
+  @apply bg-black text-gray-100;
   font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* React Flow custom styles */
+.react-flow__controls {
+  background: #1f1f1f !important;
+  border: 1px solid #374151 !important;
+}
+
+.react-flow__controls-button {
+  background: #1f1f1f !important;
+  border-bottom: 1px solid #374151 !important;
+  color: #9ca3af !important;
+}
+
+.react-flow__controls-button:hover {
+  background: #374151 !important;
+}
+
+.react-flow__controls-button svg {
+  fill: #9ca3af !important;
 }
 
 /* Cyber glow effects */
 .glow-cyan {
-  box-shadow: 0 0 10px rgba(0, 255, 195, 0.3);
+  box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
 }
 
 .glow-cyan-strong {
-  box-shadow: 0 0 20px rgba(0, 255, 195, 0.6);
+  box-shadow: 0 0 20px rgba(120, 120, 120, 0.6);
 }
 
 /* Scrollbar styling */
@@ -21,14 +41,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 195, 0.3);
+  background: rgba(80, 80, 80, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 195, 0.5);
+  background: rgba(100, 100, 100, 0.7);
 }
