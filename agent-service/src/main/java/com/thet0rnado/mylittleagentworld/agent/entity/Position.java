@@ -20,7 +20,7 @@ public class Position {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
-    private Agent agent;
+    private AgentEntity agent;
 
     @Column(name = "x")
     private Double x;

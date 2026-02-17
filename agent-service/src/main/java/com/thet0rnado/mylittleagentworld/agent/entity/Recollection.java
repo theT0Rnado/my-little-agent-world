@@ -23,6 +23,6 @@ public class Recollection {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
-    private Agent agent;
+    private AgentEntity agent;
 
 }
