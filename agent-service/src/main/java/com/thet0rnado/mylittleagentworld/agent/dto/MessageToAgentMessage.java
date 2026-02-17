@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageToAgentRequest {
+public class MessageToAgentMessage {
 
-
+    private String text;
+    private Long userId;
 
 }

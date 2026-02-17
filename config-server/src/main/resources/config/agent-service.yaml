@@ -35,11 +35,20 @@ spring:
 
 rabbitmq:
   exchange:
-    requests: requests.exchange
+    agent: agent.exchange
+    news: news.exchange
   queue:
-    requests-to-ai: requests.to.ai.queue
+    agent-all-agent-data: agent.all.agent.data.queue
+    agent-message: agent.message.queue
+    agent-all-agent-data-from-ai: agent.all.agent.data.from.ai.queue
+    agent-message-from-ai: agent.message.from.ai.queue
+    news-from-ai: news.from.ai.queue
   routing-key:
-    requests-to-ai: requests.to.ai
+    agent-all-agent-data: agent.all.agent.data
+    agent-message: agent.message
+    agent-all-agent-data-from-ai: agent.all.agent.data.from.ai
+    agent-message-from-ai: agent.message.from.ai
+    news-from-ai: news.from.ai
 
 server:
   port: 8081
