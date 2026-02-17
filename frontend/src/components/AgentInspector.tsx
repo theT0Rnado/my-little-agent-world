@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSimulationStore } from '@/stores/simulationStore';
 import { getMoodColor, getMoodEmoji } from '@/lib/utils';
 import { Brain, Heart, Target, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function AgentInspector() {
   const { selectedAgentId, agents, relations, selectAgent } = useSimulationStore();
@@ -25,13 +26,16 @@ export function AgentInspector() {
   const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${agent.name}`;
 
   return (
-    <Drawer open={!!selectedAgentId} onOpenChange={(open) => !open && selectAgent(null)}>
-      <DrawerContent className="bg-slate-900 border-slate-700 max-h-[85vh]">
-        <DrawerHeader className="border-b border-slate-700">
+    <Drawer 
+      open={!!selectedAgentId} 
+      onOpenChange={(open) => !open && selectAgent(null)}
+    >
+      <DrawerContent className="bg-gray-950 border-gray-800 h-[70vh] transition-transform duration-300 ease-in-out">
+        <DrawerHeader className="border-b border-gray-800 shrink-0">
           <div className="flex items-center gap-4">
-            <Avatar className="h-16 w-16 border-2 border-cyan-400">
+            <Avatar className="h-16 w-16 border-2 border-gray-600">
               <AvatarImage src={avatarUrl} alt={agent.name} />
-              <AvatarFallback className="bg-slate-800 text-cyan-400 text-xl font-bold">
+              <AvatarFallback className="bg-gray-900 text-gray-300 text-xl font-bold">
                 {agent.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
@@ -45,108 +49,139 @@ export function AgentInspector() {
           </div>
         </DrawerHeader>
 
-        <Tabs defaultValue="personality" className="p-6">
-          <TabsList className="grid w-full grid-cols-4 bg-slate-800">
-            <TabsTrigger value="personality">
-              <Brain className="h-4 w-4 mr-2" />
-              Характер
-            </TabsTrigger>
-            <TabsTrigger value="memories">
-              <Heart className="h-4 w-4 mr-2" />
-              Память
-            </TabsTrigger>
-            <TabsTrigger value="plans">
-              <Target className="h-4 w-4 mr-2" />
-              Планы
-            </TabsTrigger>
-            <TabsTrigger value="relations">
-              <Users className="h-4 w-4 mr-2" />
-              Связи
-            </TabsTrigger>
-          </TabsList>
+        <div className="flex-1 overflow-hidden">
+          <Tabs defaultValue="personality" className="h-full flex flex-col">
+            <TabsList className="grid w-full grid-cols-4 bg-gray-900 p-1 mx-6 mt-4 shrink-0">
+              <TabsTrigger 
+                value="personality"
+                className="data-[state=active]:bg-gray-700 data-[state=active]:text-white transition-all duration-200"
+              >
+                <Brain className="h-4 w-4 mr-2" />
+                Характер
+              </TabsTrigger>
+              <TabsTrigger 
+                value="memories"
+                className="data-[state=active]:bg-gray-700 data-[state=active]:text-white transition-all duration-200"
+              >
+                <Heart className="h-4 w-4 mr-2" />
+                Память
+              </TabsTrigger>
+              <TabsTrigger 
+                value="plans"
+                className="data-[state=active]:bg-gray-700 data-[state=active]:text-white transition-all duration-200"
+              >
+                <Target className="h-4 w-4 mr-2" />
+                Планы
+              </TabsTrigger>
+              <TabsTrigger 
+                value="relations"
+                className="data-[state=active]:bg-gray-700 data-[state=active]:text-white transition-all duration-200"
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Связи
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="personality" className="mt-4">
-            <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-              <p className="text-slate-300 leading-relaxed">{agent.personality}</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="memories" className="mt-4">
-            <ScrollArea className="h-64">
-              <div className="space-y-2">
-                {agent.memories.map((memory, i) => (
-                  <div
-                    key={i}
-                    className="bg-slate-800/50 rounded-lg p-3 border border-slate-700"
-                  >
-                    <p className="text-sm text-slate-300">{memory}</p>
+            <ScrollArea className="flex-1 px-6">
+              <TabsContent value="personality" className="mt-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-800">
+                    <p className="text-gray-300 leading-relaxed">{agent.personality}</p>
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </TabsContent>
+                </motion.div>
+              </TabsContent>
 
-          <TabsContent value="plans" className="mt-4">
-            <ScrollArea className="h-64">
-              <div className="space-y-2">
-                {agent.plans.map((plan, i) => (
-                  <div
-                    key={i}
-                    className="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-start gap-3"
-                  >
-                    <span className="text-cyan-400 font-bold">{i + 1}.</span>
-                    <p className="text-sm text-slate-300 flex-1">{plan}</p>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </TabsContent>
-
-          <TabsContent value="relations" className="mt-4">
-            <ScrollArea className="h-64">
-              <div className="space-y-2">
-                {agentRelations.map((rel) => {
-                  const otherAgentId = rel.source === agent.id ? rel.target : rel.source;
-                  const otherAgent = agents.find((a) => a.id === otherAgentId);
-                  if (!otherAgent) return null;
-
-                  const isPositive = rel.value > 0;
-                  const strength = Math.abs(rel.value);
-                  const otherAvatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${otherAgent.name}`;
-
-                  return (
+              <TabsContent value="memories" className="mt-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-2"
+                >
+                  {agent.memories.map((memory, i) => (
                     <div
-                      key={rel.id}
-                      className="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-center justify-between"
+                      key={i}
+                      className="bg-gray-900 rounded-lg p-3 border border-gray-800"
                     >
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={otherAvatarUrl} alt={otherAgent.name} />
-                          <AvatarFallback className="bg-slate-700 text-xs">
-                            {otherAgent.name.slice(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-sm text-slate-300">{otherAgent.name}</span>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`h-2 rounded-full ${
-                            isPositive ? 'bg-green-400' : 'bg-red-400'
-                          }`}
-                          style={{ width: `${strength * 60}px` }}
-                        />
-                        <span className="text-xs text-slate-400">
-                          {(rel.value * 100).toFixed(0)}%
-                        </span>
-                      </div>
+                      <p className="text-sm text-gray-300">{memory}</p>
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </motion.div>
+              </TabsContent>
+
+              <TabsContent value="plans" className="mt-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-2"
+                >
+                  {agent.plans.map((plan, i) => (
+                    <div
+                      key={i}
+                      className="bg-gray-900 rounded-lg p-3 border border-gray-800 flex items-start gap-3"
+                    >
+                      <span className="text-gray-400 font-bold">{i + 1}.</span>
+                      <p className="text-sm text-gray-300 flex-1">{plan}</p>
+                    </div>
+                  ))}
+                </motion.div>
+              </TabsContent>
+
+              <TabsContent value="relations" className="mt-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-2"
+                >
+                  {agentRelations.map((rel) => {
+                    const otherAgentId = rel.source === agent.id ? rel.target : rel.source;
+                    const otherAgent = agents.find((a) => a.id === otherAgentId);
+                    if (!otherAgent) return null;
+
+                    const isPositive = rel.value > 0;
+                    const strength = Math.abs(rel.value);
+                    const otherAvatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${otherAgent.name}`;
+
+                    return (
+                      <div
+                        key={rel.id}
+                        className="bg-gray-900 rounded-lg p-3 border border-gray-800 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8">
+                            <AvatarImage src={otherAvatarUrl} alt={otherAgent.name} />
+                            <AvatarFallback className="bg-gray-800 text-xs">
+                              {otherAgent.name.slice(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-gray-300">{otherAgent.name}</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`h-2 rounded-full ${
+                              isPositive ? 'bg-green-500' : 'bg-red-500'
+                            }`}
+                            style={{ width: `${strength * 60}px` }}
+                          />
+                          <span className="text-xs text-gray-500">
+                            {(rel.value * 100).toFixed(0)}%
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+              </TabsContent>
             </ScrollArea>
-          </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </DrawerContent>
     </Drawer>
   );
