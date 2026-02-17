@@ -7,22 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "recollections")
+@Table(name = "agent_links")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recollection {
+public class AgentLink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "text", nullable = false, columnDefinition = "TEXT")
-    private String text;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
+
+    @Column(name = "linkQuality", nullable = false)
+    private Integer linkQuality;
 
 }
