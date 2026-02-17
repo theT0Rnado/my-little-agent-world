@@ -1,9 +1,11 @@
 package com.thet0rnado.mylittleagentworld.world.controller;
 
 import com.thet0rnado.mylittleagentworld.world.dto.NewsDto;
+import com.thet0rnado.mylittleagentworld.world.dto.NewsMessage;
 import com.thet0rnado.mylittleagentworld.world.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +31,11 @@ public class NewsController {
     public ResponseEntity<NewsDto> getNewsById(@PathVariable Long id) {
         log.info("🔍 Запрос новости ID: {}", id);
         return ResponseEntity.ok(newsService.getNewsById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<NewsDto> createNews(@RequestBody NewsMessage message) {
+        newsService.saveNewsFromAi(message);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
