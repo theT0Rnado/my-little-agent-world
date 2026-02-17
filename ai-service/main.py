@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 import logging
+import asyncio
 from models import ActionRequest, ActionResult
 from llm.client import llm_client
 from llm.prompts import REFLECTION_PROMPT, PLAN_PROMPT, ACTION_PROMPT
 from memory.chroma_service import chroma_service
+from rabbitmq.consumer import rabbitmq_consumer
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,9 +16,15 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting AI Service...")
     await chroma_service.init_collection()
+    
+    # Start RabbitMQ consumer in background
+    asyncio.create_task(rabbitmq_consumer.start_consuming())
+    
     yield
+    
     # Shutdown
     logger.info("Shutting down AI Service...")
+    await rabbitmq_consumer.close()
 
 app = FastAPI(title="AI Service", lifespan=lifespan)
 
