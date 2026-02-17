@@ -16,9 +16,15 @@ public class AgentConsumer {
     private AgentService agentService;
     private AgentProducer agentProducer;
 
-    @RabbitListener(queues = "${rabbitmq.queue.agent-all-agent-data-from-ai}")
-    private void startCreatingAgents(AgentListFromAiMessage message) {
-
+    @RabbitListener(queues = "${rabbitmq.queue.agent.all.agent.data.from.ai}")
+    public void startCreatingAgents(AgentListFromAiMessage message) {
+        log.info("📨 Получен список агентов от AI: {} агентов",
+                message.getAgents() != null ? message.getAgents().size() : 0);
+        try {
+            agentService.createAgents(message);
+        } catch (Exception e) {
+            log.error("❌ Ошибка обработки списка агентов: {}", e.getMessage(), e);
+        }
     }
 
     @RabbitListener(queues = "${rabbitmq.queue.agent-message-from-ai}")
