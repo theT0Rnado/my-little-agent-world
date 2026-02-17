@@ -11,6 +11,4 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     List<News> findByStatus(News.NewsStatus status);
 
-    List<News> findBySourceOrderByPublishedAtDesc(String source);
-
 }
