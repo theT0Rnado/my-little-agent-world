@@ -42,13 +42,32 @@ class LLMClient:
         
         while attempts < max_attempts:
             try:
+                logger.info(f"Sending request to {self.model} (attempt {attempts + 1}/{max_attempts})")
+                logger.debug(f"Prompt: {prompt[:100]}...")
+                
                 response = await self.client.chat.completions.create(
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=max_tokens,
                     temperature=0.7
                 )
-                return response.choices[0].message.content.strip()
+                
+                logger.debug(f"Response object: {response}")
+                
+                if not response.choices:
+                    logger.error("Response has no choices")
+                    return "Error: API returned empty choices"
+                
+                content = response.choices[0].message.content
+                
+                if content is None:
+                    logger.error("Response content is None")
+                    return "Error: API returned None content"
+                
+                result = content.strip()
+                logger.info(f"Generated response: {len(result)} characters")
+                
+                return result
             
             except RateLimitError as e:
                 logger.warning(f"Rate limit hit on key #{self.current_key_index + 1}: {e}")
@@ -61,7 +80,7 @@ class LLMClient:
                 continue
             
             except Exception as e:
-                logger.error(f"LLM generation error: {e}")
+                logger.error(f"LLM generation error: {type(e).__name__}: {e}")
                 return f"Error: {str(e)}"
         
         return "Error: Failed to generate response after trying all API keys"

@@ -44,4 +44,11 @@ export interface SimulationState {
   setRunning: (isRunning: boolean) => void;
   selectAgent: (id: string | null) => void;
   updateAgentPosition: (id: string, position: { x: number; y: number }) => void;
+  
+  // Backend integration methods
+  setAgents: (agents: Agent[]) => void;
+  updateAgent: (agent: Agent) => void;
+  addAgent: (agent: Agent) => void;
+  removeAgent: (id: string) => void;
+  syncWithBackend: () => Promise<void>;
 }

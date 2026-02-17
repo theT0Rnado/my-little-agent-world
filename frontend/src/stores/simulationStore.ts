@@ -105,7 +105,7 @@ const mockRelations: Relation[] = [
   { id: 'r10', source: '3', target: '4', value: -0.2 }
 ];
 
-export const useSimulationStore = create<SimulationState>((set) => ({
+export const useSimulationStore = create<SimulationState>((set, get) => ({
   agents: mockAgents,
   events: mockEvents,
   relations: mockRelations,
@@ -161,5 +161,41 @@ export const useSimulationStore = create<SimulationState>((set) => ({
     agents: state.agents.map(agent =>
       agent.id === id ? { ...agent, position } : agent
     )
-  }))
+  })),
+
+  // ========== BACKEND INTEGRATION METHODS ==========
+  // Эти методы готовы для подключения к Backend
+  // Пока используются моки, но инфраструктура готова
+
+  // Заменить всех агентов (из Backend)
+  setAgents: (agents: Agent[]) => set({ agents }),
+
+  // Обновить одного агента (из WebSocket)
+  updateAgent: (agent: Agent) => set((state) => ({
+    agents: state.agents.map(a => a.id === agent.id ? agent : a)
+  })),
+
+  // Добавить агента (если придёт новый)
+  addAgent: (agent: Agent) => set((state) => ({
+    agents: [...state.agents, agent]
+  })),
+
+  // Удалить агента
+  removeAgent: (id: string) => set((state) => ({
+    agents: state.agents.filter(a => a.id !== id)
+  })),
+
+  // Синхронизация с Backend (вызывается при старте)
+  syncWithBackend: async () => {
+    try {
+      // Пока закомментировано - используем моки
+      // const backendAgents = await api.getAgents();
+      // const mappedAgents = backendAgents.map(mappers.mapAgent);
+      // set({ agents: mappedAgents });
+      
+      console.log('🔄 Backend sync ready (using mocks for now)');
+    } catch (error) {
+      console.error('❌ Failed to sync with backend:', error);
+    }
+  },
 }));
