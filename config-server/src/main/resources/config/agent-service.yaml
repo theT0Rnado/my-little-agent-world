@@ -17,6 +17,29 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+    rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+      listener:
+        simple:
+          acknowledge-mode: auto
+          retry:
+            enabled: true
+            initial-interval: 1000
+            max-attempts: 3
+            multiplier: 2.0
+
+rabbitmq:
+  exchange:
+    requests: requests.exchange
+  queue:
+    requests-to-ai: requests.to.ai.queue
+  routing-key:
+    requests-to-ai: requests.to.ai
 
 server:
   port: 8081
@@ -27,3 +50,9 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org.springframework.amqp: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
