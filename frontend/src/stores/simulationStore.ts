@@ -130,6 +130,18 @@ export const useSimulationStore = create<SimulationState>((set) => ({
     )
   })),
 
+  updateAgentMessage: (id, message) => set((state) => ({
+    agents: state.agents.map(agent =>
+      agent.id === id ? { ...agent, currentMessage: message, messageTimestamp: Date.now() } : agent
+    )
+  })),
+
+  clearAgentMessage: (id) => set((state) => ({
+    agents: state.agents.map(agent =>
+      agent.id === id ? { ...agent, currentMessage: undefined, messageTimestamp: undefined } : agent
+    )
+  })),
+
   updateRelation: (source, target, value) => set((state) => ({
     relations: state.relations.map(rel =>
       (rel.source === source && rel.target === target) ||
