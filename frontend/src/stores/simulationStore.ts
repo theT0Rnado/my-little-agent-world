@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Agent, Event, Relation, SimulationState, Mood } from '@/types';
+import type { Agent, Event, Relation, SimulationState } from '@/types';
 
 // Mock agents
 const mockAgents: Agent[] = [
@@ -127,6 +127,18 @@ export const useSimulationStore = create<SimulationState>((set) => ({
   updateAgentMood: (id, mood) => set((state) => ({
     agents: state.agents.map(agent =>
       agent.id === id ? { ...agent, mood } : agent
+    )
+  })),
+
+  updateAgentMessage: (id, message) => set((state) => ({
+    agents: state.agents.map(agent =>
+      agent.id === id ? { ...agent, currentMessage: message, messageTimestamp: Date.now() } : agent
+    )
+  })),
+
+  clearAgentMessage: (id) => set((state) => ({
+    agents: state.agents.map(agent =>
+      agent.id === id ? { ...agent, currentMessage: undefined, messageTimestamp: undefined } : agent
     )
   })),
 

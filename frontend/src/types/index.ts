@@ -8,6 +8,8 @@ export interface Agent {
   memories: string[];
   plans: string[];
   position: { x: number; y: number };
+  currentMessage?: string; // Current message being displayed
+  messageTimestamp?: number; // When the message was set
 }
 
 export interface Event {
@@ -35,6 +37,8 @@ export interface SimulationState {
   selectedAgentId: string | null;
   addEvent: (event: Omit<Event, 'id' | 'timestamp'>) => void;
   updateAgentMood: (id: string, mood: Mood) => void;
+  updateAgentMessage: (id: string, message: string) => void;
+  clearAgentMessage: (id: string) => void;
   updateRelation: (source: string, target: string, value: number) => void;
   setSpeed: (speed: number) => void;
   setRunning: (isRunning: boolean) => void;
