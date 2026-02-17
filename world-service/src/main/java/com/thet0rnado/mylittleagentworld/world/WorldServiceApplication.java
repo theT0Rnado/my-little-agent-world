@@ -8,6 +8,6 @@ public class WorldServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WorldServiceApplication.class, args);
+		System.out.println("✅ World Service запущен на http://localhost:8082");
 	}
-
 }

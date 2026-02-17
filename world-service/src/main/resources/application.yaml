@@ -1,3 +1,67 @@
+server:
+  port: 8082
+
 spring:
   application:
     name: world-service
+
+  # PostgreSQL Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/world_db
+    username: program
+    password: yellow-granny-troll-boom
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          initial-interval: 1000
+          max-attempts: 3
+          multiplier: 2.0
+
+# RabbitMQ Custom Configuration
+rabbitmq:
+  exchange:
+    news: news.exchange
+  queue:
+    news-to-ai: news.to.ai.queue
+  routing-key:
+    news-to-ai: news.to.ai
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    com.thet0rnado.mylittleagentworld.worldservice: DEBUG
+    org.springframework.amqp: INFO
+    org.hibernate.SQL: DEBUG
