@@ -61,22 +61,22 @@ public class AgentService {
                 .build();
 
         // Позиция
+        Position position;
         if (dto.getPosition() != null) {
-            Position position = Position.builder()
+            position = Position.builder()
                     .x(dto.getPosition().getX())
                     .y(dto.getPosition().getY())
                     .agent(agent)
                     .build();
-            agent.setPosition(position);
         } else {
             // Дефолтная позиция если AI не передал
-            Position position = Position.builder()
+            position = Position.builder()
                     .x(0.0)
                     .y(0.0)
                     .agent(agent)
                     .build();
-            agent.setPosition(position);
         }
+        agent.setPosition(position);
 
         // Воспоминания
         if (dto.getRecollections() != null) {
