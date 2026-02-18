@@ -1,9 +1,8 @@
 package com.thet0rnado.mylittleagentworld.agent.messaging;
 
-import com.thet0rnado.mylittleagentworld.agent.dto.AgentDto;
 import com.thet0rnado.mylittleagentworld.agent.dto.AgentListFromAiMessage;
 import com.thet0rnado.mylittleagentworld.agent.dto.AgentMessageTextMessage;
-import com.thet0rnado.mylittleagentworld.agent.entity.Agent;
+import com.thet0rnado.mylittleagentworld.agent.entity.agent.Agent;
 import com.thet0rnado.mylittleagentworld.agent.mapper.MessageMapper;
 import com.thet0rnado.mylittleagentworld.agent.service.AgentService;
 import lombok.RequiredArgsConstructor;

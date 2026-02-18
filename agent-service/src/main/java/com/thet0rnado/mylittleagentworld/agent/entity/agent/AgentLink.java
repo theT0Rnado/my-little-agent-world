@@ -1,4 +1,4 @@
-package com.thet0rnado.mylittleagentworld.agent.entity;
+package com.thet0rnado.mylittleagentworld.agent.entity.agent;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,25 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "positions")
+@Table(name = "agent_links")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Position {
+public class AgentLink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
 
-    @Column(name = "x")
-    private Double x;
-
-    @Column(name = "y")
-    private Double y;
+    @Column(name = "linkQuality", nullable = false)
+    private Integer linkQuality;
 
 }

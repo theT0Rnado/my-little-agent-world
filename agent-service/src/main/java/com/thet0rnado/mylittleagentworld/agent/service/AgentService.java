@@ -2,10 +2,10 @@ package com.thet0rnado.mylittleagentworld.agent.service;
 
 import com.thet0rnado.mylittleagentworld.agent.dto.AgentDto;
 import com.thet0rnado.mylittleagentworld.agent.dto.AgentListFromAiMessage;
-import com.thet0rnado.mylittleagentworld.agent.entity.Agent;
-import com.thet0rnado.mylittleagentworld.agent.entity.Plan;
-import com.thet0rnado.mylittleagentworld.agent.entity.Position;
-import com.thet0rnado.mylittleagentworld.agent.entity.Recollection;
+import com.thet0rnado.mylittleagentworld.agent.entity.agent.Agent;
+import com.thet0rnado.mylittleagentworld.agent.entity.agent.Plan;
+import com.thet0rnado.mylittleagentworld.agent.entity.agent.Position;
+import com.thet0rnado.mylittleagentworld.agent.entity.agent.Recollection;
 import com.thet0rnado.mylittleagentworld.agent.repository.AgentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

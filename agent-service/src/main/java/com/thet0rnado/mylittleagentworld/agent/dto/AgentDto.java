@@ -1,6 +1,6 @@
 package com.thet0rnado.mylittleagentworld.agent.dto;
 
-import com.thet0rnado.mylittleagentworld.agent.entity.Mood;
+import com.thet0rnado.mylittleagentworld.agent.entity.agent.Mood;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

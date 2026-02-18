@@ -1,4 +1,4 @@
-package com.thet0rnado.mylittleagentworld.agent.entity;
+package com.thet0rnado.mylittleagentworld.agent.entity.agent;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,22 +7,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "recollections")
+@Table(name = "positions")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recollection {
+public class Position {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "text", nullable = false, columnDefinition = "TEXT")
-    private String text;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
+
+    @Column(name = "x")
+    private Double x;
+
+    @Column(name = "y")
+    private Double y;
 
 }

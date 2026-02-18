@@ -1,4 +1,4 @@
-package com.thet0rnado.mylittleagentworld.agent.entity;
+package com.thet0rnado.mylittleagentworld.agent.entity.agent;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
