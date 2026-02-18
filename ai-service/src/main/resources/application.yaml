@@ -1,3 +1,25 @@
+server:
+  port: 8083
+
 spring:
   application:
     name: ai-service
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+rabbitmq:
+  exchange:
+    news: news.exchange
+  queue:
+    news-to-ai: news.to.ai.queue
+    news-from-ai: news.from.ai.queue
+  routing-key:
+    news-from-ai: news.from.ai
+
+logging:
+  level:
+    com.thet0rnado.mylittleagentworld.ai: DEBUG
