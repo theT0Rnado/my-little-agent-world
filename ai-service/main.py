@@ -5,8 +5,8 @@ import asyncio
 from models import ActionRequest, ActionResult
 from llm.client import llm_client
 from llm.prompts import REFLECTION_PROMPT, PLAN_PROMPT, ACTION_PROMPT
-from memory.chroma_service import chroma_service
 from rabbitmq.consumer import rabbitmq_consumer
+from tasks.agent_generator import _check_and_initialize_agents
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -15,10 +15,20 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting AI Service...")
-    await chroma_service.init_collection()
     
     # Start RabbitMQ consumer in background
     asyncio.create_task(rabbitmq_consumer.start_consuming())
+    
+    # Initialize agents if they don't exist
+    logger.info("🤖 Checking agent initialization...")
+    try:
+        result = await _check_and_initialize_agents()
+        if result['status'] == 'completed':
+            logger.info(f"✅ Initialized {result['created']} agents: {', '.join(result['agent_names'])}")
+        elif result['status'] == 'skipped':
+            logger.info(f"ℹ️ Agent initialization skipped: {result['reason']}")
+    except Exception as e:
+        logger.warning(f"⚠️ Could not initialize agents: {e}")
     
     yield
     
@@ -31,15 +41,10 @@ app = FastAPI(title="AI Service", lifespan=lifespan)
 async def process_agent_action(request: ActionRequest) -> ActionResult:
     """Main processing pipeline: reflection → plan → action"""
     try:
-        # 1. Retrieve memories
-        memories = await chroma_service.retrieve_memories(
-            request.agent_id, 
-            request.current_context, 
-            limit=5
-        )
-        memories_text = "\n".join(memories) if memories else "Нет воспоминаний"
+        # Без ChromaDB - используем пустые воспоминания
+        memories_text = "Нет воспоминаний"
         
-        # 2. Reflection
+        # 1. Reflection
         reflection_prompt = REFLECTION_PROMPT.format(
             personality=request.personality,
             context=request.current_context,
@@ -48,21 +53,15 @@ async def process_agent_action(request: ActionRequest) -> ActionResult:
         reflection = await llm_client.generate(reflection_prompt, max_tokens=100)
         logger.info(f"Reflection for {request.agent_id}: {reflection}")
         
-        # 3. Plan
+        # 2. Plan
         plan_prompt = PLAN_PROMPT.format(reflection=reflection)
         plan = await llm_client.generate(plan_prompt, max_tokens=100)
         logger.info(f"Plan for {request.agent_id}: {plan}")
         
-        # 4. Action
+        # 3. Action
         action_prompt = ACTION_PROMPT.format(plan=plan)
         action = await llm_client.generate(action_prompt, max_tokens=150)
         logger.info(f"Action for {request.agent_id}: {action}")
-        
-        # 5. Save to memory
-        await chroma_service.add_memory(
-            request.agent_id,
-            f"Context: {request.current_context}. Action: {action}"
-        )
         
         return ActionResult(
             agent_id=request.agent_id,

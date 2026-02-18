@@ -25,7 +25,7 @@ class TestLLMIntegration:
         # Initialize client
         client = LLMClient()
         
-        print(f"\n📋 Configuration:")
+        print(f"\nConfiguration:")
         print(f"   Base URL: {client.base_url}")
         print(f"   Model: {client.model}")
         print(f"   API Keys: {len(client.api_keys)} configured")
@@ -35,20 +35,20 @@ class TestLLMIntegration:
         # Prepare prompt
         prompt = "Hello! Please respond with a friendly greeting."
         
-        print(f"\n📤 REQUEST:")
+        print(f"\nREQUEST:")
         print(f"   Prompt: {prompt}")
         print(f"   Max Tokens: 100")
         print(f"   Temperature: 0.7")
         
-        print(f"\n⏳ Sending request to {client.model}...")
+        print(f"\nSending request to {client.model}...")
         print(f"   (Check logs below for detailed API interaction)")
         
         # Make API call
         try:
             result = await client.generate(prompt, max_tokens=100)
             
-            print(f"\n📥 RESPONSE:")
-            print(f"   Status: {'✓ Success' if result and not result.startswith('Error:') else '✗ Error'}")
+            print(f"\nRESPONSE:")
+            print(f"   Status: {'Success' if result and not result.startswith('Error:') else 'Error'}")
             print(f"   Length: {len(result)} characters")
             print(f"   Content: '{result}'")
             print(f"   Type: {type(result)}")
@@ -60,18 +60,18 @@ class TestLLMIntegration:
             assert isinstance(result, str), f"Response is not string: {type(result)}"
             
             if result.startswith("Error:"):
-                print(f"\n⚠️  API returned error: {result}")
+                print(f"\nAPI returned error: {result}")
                 pytest.fail(f"API Error: {result}")
             
             if len(result) == 0:
-                print(f"\n⚠️  API returned empty string - this might be an API issue")
+                print(f"\nAPI returned empty string - this might be an API issue")
                 print(f"   Check the logs above for more details")
                 pytest.fail("Response is empty string - check API configuration and logs")
             
-            print("\n✓ Test passed successfully!")
+            print("\nTest passed successfully!")
             
         except Exception as e:
-            print(f"\n✗ Exception occurred: {type(e).__name__}")
+            print(f"\nException occurred: {type(e).__name__}")
             print(f"   Message: {str(e)}")
             print("\n" + "="*70)
             raise
