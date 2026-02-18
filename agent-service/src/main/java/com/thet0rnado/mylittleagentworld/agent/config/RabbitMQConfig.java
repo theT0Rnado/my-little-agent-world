@@ -18,34 +18,34 @@ class RabbitMQConfig {
     @Value("${rabbitmq.exchange.news}")
     private String newsExchange;
 
-    @Value("${rabbitmq.queue.agent.all.agent.data}")
+    @Value("${rabbitmq.queue.agent-all-agent-data}")
     private String agentAllAgentDataQueue;
 
-    @Value("${rabbitmq.queue.agent.message}")
+    @Value("${rabbitmq.queue.agent-message}")
     private String agentMessageQueue;
 
-    @Value("${rabbitmq.queue.agent.all.agent.data.from.ai}")
+    @Value("${rabbitmq.queue.agent-all-agent-data-from-ai}")
     private String agentAllAgentDataFromAiQueue;
 
-    @Value("${rabbitmq.queue.agent.message.from.ai}")
+    @Value("${rabbitmq.queue.agent-message-from.-ai}")
     private String agentMessageFromAiQueue;
 
-    @Value("${rabbitmq.queue.news.from.ai}")
+    @Value("${rabbitmq.queue.news-from-ai}")
     private String newsFromAiQueue;
 
-    @Value("${rabbitmq.routing-key.agent.all.agent.data}")
+    @Value("${rabbitmq.routing-key.agent-all-agent-data}")
     private String agentAllAgentDataRoutingKey;
 
-    @Value("${rabbitmq.routing-key.agent.message}")
+    @Value("${rabbitmq.routing-key.agent-message}")
     private String agentMessageRoutingKey;
 
-    @Value("${rabbitmq.routing-key.agent.all.agent.data.from.ai}")
+    @Value("${rabbitmq.routing-key.agent-all-agent-data-from-ai}")
     private String agentAllAgentDataFromAiRoutingKey;
 
-    @Value("${rabbitmq.routing-key.agent.message.from.ai}")
+    @Value("${rabbitmq.routing-key.agent-message-from-ai}")
     private String agentMessageFromAiRoutingKey;
 
-    @Value("${rabbitmq.routing-key.news.from.ai}")
+    @Value("${rabbitmq.routing-key.news-from-ai}")
     private String newsFromAiRoutingKey;
 
     @Bean
