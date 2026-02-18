@@ -17,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AgentConsumer {
 
-    private AgentService agentService;
-    private AgentProducer agentProducer;
+    private final AgentService agentService;
+    private final AgentProducer agentProducer;
     private final MessageMapper messageMapper;
 
     @RabbitListener(queues = "${rabbitmq.queue.agent-all-agent-data-from-ai}")

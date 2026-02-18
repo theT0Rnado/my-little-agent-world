@@ -5,8 +5,9 @@ fastapi==0.115.0
 uvicorn[standard]==0.32.0
 aio-pika==9.4.3
 # chromadb==0.5.23  # Закомментировано - требует Build Tools
-openai==1.54.0
-httpx==0.27.2  # Совместимая версия с openai 1.54.0
+openai==1.58.1
+httpx==0.27.2  # Совместимая версия с openai
+aiohttp==3.8.6  # Для HTTP запросов к Agent Service
 pydantic==2.9.0
 pydantic-settings==2.6.0
 python-dotenv==1.0.1

@@ -4,7 +4,12 @@ import asyncio
 import aiohttp
 import aio_pika
 from datetime import datetime
-from celery_app import celery_app
+from typing import Optional, List
+try:
+    from celery_app import celery_app, CELERY_AVAILABLE
+except ImportError:
+    celery_app = None
+    CELERY_AVAILABLE = False
 from llm.client import llm_client
 from llm.prompts import (
     GENERATE_AGENT_NAME_PROMPT,
@@ -21,29 +26,42 @@ logger = logging.getLogger(__name__)
 # Количество агентов для начальной генерации
 INITIAL_AGENTS_COUNT = 4
 
-@celery_app.task(name='tasks.agent_generator.initialize_agents')
-def initialize_agents():
-    """
-    Задача инициализации: проверяет есть ли агенты в Agent Service
-    Если нет - создает начальный набор агентов
-    """
-    try:
-        logger.info("🔍 Checking if agents exist in Agent Service...")
-        
-        # Запускаем асинхронную функцию
-        loop = asyncio.get_event_loop()
-        if loop.is_closed():
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-        
-        result = loop.run_until_complete(_check_and_initialize_agents())
-        
-        logger.info(f"✅ Initialization complete: {result}")
-        return result
-        
-    except Exception as e:
-        logger.error(f"❌ Error in agent initialization: {e}")
-        raise
+if CELERY_AVAILABLE and celery_app:
+    @celery_app.task(name='tasks.agent_generator.initialize_agents')
+    def initialize_agents():
+        """
+        Задача инициализации: проверяет есть ли агенты в Agent Service
+        Если нет - создает начальный набор агентов
+        """
+        try:
+            logger.info("🔍 Checking if agents exist in Agent Service...")
+            
+            # Запускаем асинхронную функцию
+            loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            
+            result = loop.run_until_complete(_check_and_initialize_agents())
+            
+            logger.info(f"✅ Initialization complete: {result}")
+            return result
+            
+        except Exception as e:
+            logger.error(f"❌ Error in agent initialization: {e}")
+            raise
+else:
+    # Fallback без Celery
+    def initialize_agents():
+        """Fallback версия без Celery"""
+        logger.warning("⚠️ Celery not available, using direct initialization")
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            result = loop.run_until_complete(_check_and_initialize_agents())
+            return result
+        finally:
+            loop.close()
 
 async def _check_and_initialize_agents() -> dict:
     """
@@ -130,7 +148,7 @@ async def _check_and_initialize_agents() -> dict:
             'timestamp': datetime.now().isoformat()
         }
 
-async def _get_agents_count() -> int | None:
+async def _get_agents_count() -> Optional[int]:
     """
     Получает количество агентов из Agent Service
     Возвращает None если сервис недоступен
@@ -154,7 +172,7 @@ async def _get_agents_count() -> int | None:
         logger.error(f"❌ Error checking agents: {e}")
         return None
 
-async def _generate_single_agent() -> dict | None:
+async def _generate_single_agent() -> Optional[dict]:
     """
     Генерация одного агента через LLM
     Возвращает dict с данными агента или None при ошибке
@@ -231,7 +249,7 @@ async def _generate_single_agent() -> dict | None:
         logger.error(f"❌ Error generating agent: {e}")
         return None
 
-async def _send_agents_batch_to_service(agents: list[dict]) -> bool:
+async def _send_agents_batch_to_service(agents: List[dict]) -> bool:
     """
     Отправка батча агентов в Agent Service через RabbitMQ
     Формат: AgentListFromAiMessage с массивом агентов

@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     
     # LLM настройки
     llm_provider: str = "ionet"
-    ionet_api_keys: str = ""  # Comma-separated list of API keys
+    ionet_api_keys: str = "io-v2-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lciI6IjYzZTA1ZjEwLWJlMTEtNDgxNC1iOTE3LTgxNmUyZjhhOTc5MyIsImV4cCI6NDkyNDk3OTU4N30.G0GLNMi3MD7iZUjp0l5iQu2KbDbbgN5WdmDU3g9lNQorITyMkD9X71i3Vqdc-Nq-t9UoFonu7uIERu2yLZjVQQ"  # Comma-separated list of API keys
     ionet_base_url: str = "https://api.intelligence.io.solutions/api/v1/"
     ionet_model: str = "deepseek-ai/DeepSeek-V3.2"
     

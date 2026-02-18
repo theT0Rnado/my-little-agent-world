@@ -10,7 +10,7 @@ class ActionResult(BaseModel):
     agent_id: str
     action_text: str
     mood_change: float = 0.0
-    target_agent_id: str | None = None
+    target_agent_id: Optional[str] = None
 
 # ========== МОДЕЛИ ДЛЯ ГЕНЕРАЦИИ АГЕНТОВ ==========
 
