@@ -1,0 +1,183 @@
+:root {
+  --bg-dark: #0a0a1a;
+  --bg-mid: #111128;
+  --bg-tile-even: #0d1f2d;
+  --bg-tile-odd: #0a1a26;
+  --border-color: #1a3a5c;
+  --accent-cyan: #00f5ff;
+  --accent-green: #39ff14;
+  --accent-yellow: #ffe600;
+  --accent-pink: #ff2d78;
+  --accent-purple: #b44fff;
+  --text-primary: #e0f7ff;
+  --text-dim: #6a9ab0;
+  --grid-size: 60px;
+  --pixel-border: 2px solid var(--accent-cyan);
+  --shadow-glow: 0 0 8px var(--accent-cyan), 0 0 20px rgba(0,245,255,0.2);
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-mono: 'VT323', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-pixel);
+  image-rendering: pixelated;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--accent-cyan); }
+
+/* Pixel button base */
+.px-btn {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 8px 14px;
+  border: 2px solid var(--accent-cyan);
+  background: transparent;
+  color: var(--accent-cyan);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  image-rendering: pixelated;
+}
+.px-btn:hover {
+  background: var(--accent-cyan);
+  color: var(--bg-dark);
+  box-shadow: var(--shadow-glow);
+}
+.px-btn:active {
+  transform: translateY(2px);
+}
+.px-btn.danger {
+  border-color: var(--accent-pink);
+  color: var(--accent-pink);
+}
+.px-btn.danger:hover {
+  background: var(--accent-pink);
+  color: var(--bg-dark);
+  box-shadow: 0 0 8px var(--accent-pink);
+}
+.px-btn.success {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+.px-btn.success:hover {
+  background: var(--accent-green);
+  color: var(--bg-dark);
+}
+
+/* Scanlines overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Pixel input */
+.px-input {
+  background: var(--bg-dark);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  padding: 8px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.px-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 8px rgba(0,245,255,0.3);
+}
+.px-input::placeholder {
+  color: var(--text-dim);
+}
+
+textarea.px-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Pixel panel */
+.px-panel {
+  border: 2px solid var(--border-color);
+  background: var(--bg-mid);
+  position: relative;
+}
+.px-panel::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(0,245,255,0.05);
+  pointer-events: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes glitch {
+  0% { clip-path: inset(0 0 98% 0); transform: translateX(-4px); }
+  10% { clip-path: inset(30% 0 60% 0); transform: translateX(4px); }
+  20% { clip-path: inset(70% 0 20% 0); transform: translateX(-2px); }
+  30% { clip-path: inset(10% 0 80% 0); transform: translateX(3px); }
+  40% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+  100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 4px var(--accent-cyan); }
+  50% { box-shadow: 0 0 16px var(--accent-cyan), 0 0 32px rgba(0,245,255,0.3); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes newsSlideIn {
+  from { opacity: 0; transform: translateX(120%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes newsSlideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(120%); }
+}
