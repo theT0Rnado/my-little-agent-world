@@ -52,4 +52,23 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
         return rabbitTemplate;
     }
+
+    @Value("${rabbitmq.queue.conversation}")
+    private String conversationQueue;
+
+    @Value("${rabbitmq.routing-key.conversation}")
+    private String conversationRoutingKey;
+
+    @Bean
+    public Queue conversationQueue() {
+        return QueueBuilder.durable(conversationQueue).build();
+    }
+
+    @Bean
+    public Binding conversationBinding(Queue conversationQueue, TopicExchange newsExchange) {
+        return BindingBuilder
+                .bind(conversationQueue)
+                .to(newsExchange)
+                .with(conversationRoutingKey);
+    }
 }

@@ -15,10 +15,9 @@ rabbitmq:
   exchange:
     news: news.exchange
   queue:
-    news-to-ai: news.to.ai.queue
-    news-from-ai: news.from.ai.queue
+    conversation: conversation.queue
   routing-key:
-    news-from-ai: news.from.ai
+    conversation: conversation.save
 
 logging:
   level:

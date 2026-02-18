@@ -28,22 +28,17 @@ spring:
     port: 5672
     username: guest
     password: guest
-    listener:
-      simple:
-        acknowledge-mode: auto
-        retry:
-          enabled: true
-          initial-interval: 1000
-          max-attempts: 3
-          multiplier: 2.0
 
+# ← ТОЛЬКО ЭТОТ БЛОК, дубликат внутри spring: убрать!
 rabbitmq:
   exchange:
     news: news.exchange
   queue:
-    news-from-ai: news.from.ai.queue   # ← изменили
+    news-from-ai: news.from.ai.queue
+    conversation: conversation.queue
   routing-key:
-    news-from-ai: news.from.ai         # ← изменили
+    news-from-ai: news.from.ai
+    conversation: conversation.save
 
 management:
   endpoints:
@@ -56,6 +51,6 @@ management:
 
 logging:
   level:
-    com.thet0rnado.mylittleagentworld: DEBUG   # ← исправили пакет
+    com.thet0rnado.mylittleagentworld: DEBUG
     org.springframework.amqp: INFO
     org.hibernate.SQL: DEBUG

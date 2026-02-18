@@ -15,38 +15,25 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.exchange.news}")
     private String newsExchange;
 
-    @Value("${rabbitmq.queue.news-to-ai}")
-    private String newsToAiQueue;
+    @Value("${rabbitmq.queue.conversation}")
+    private String conversationQueue;
 
-    @Value("${rabbitmq.queue.news-from-ai}")
-    private String newsFromAiQueue;
-
-    @Value("${rabbitmq.routing-key.news-from-ai}")
-    private String newsFromAiRoutingKey;
+    @Value("${rabbitmq.routing-key.conversation}")
+    private String conversationRoutingKey;
 
     @Bean
     public TopicExchange newsExchange() {
         return new TopicExchange(newsExchange);
     }
 
-    // Очередь которую слушаем (получаем новости от фронта)
     @Bean
-    public Queue newsToAiQueue() {
-        return QueueBuilder.durable(newsToAiQueue).build();
-    }
-
-    // Очередь куда отправляем (в world-service)
-    @Bean
-    public Queue newsFromAiQueue() {
-        return QueueBuilder.durable(newsFromAiQueue).build();
+    public Queue conversationQueue() {
+        return QueueBuilder.durable(conversationQueue).build();
     }
 
     @Bean
-    public Binding newsFromAiBinding(Queue newsFromAiQueue, TopicExchange newsExchange) {
-        return BindingBuilder
-                .bind(newsFromAiQueue)
-                .to(newsExchange)
-                .with(newsFromAiRoutingKey);
+    public Binding conversationBinding(Queue conversationQueue, TopicExchange newsExchange) {
+        return BindingBuilder.bind(conversationQueue).to(newsExchange).with(conversationRoutingKey);
     }
 
     @Bean
