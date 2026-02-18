@@ -13,6 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class AgentListFromAiMessage {
 
-    private Set<AgentFromAiDto> agents;
+    private Set<AgentDto> agents;
 
 }

@@ -1,5 +1,6 @@
 package com.thet0rnado.mylittleagentworld.agent.messaging;
 
+import com.thet0rnado.mylittleagentworld.agent.dto.AgentDto;
 import com.thet0rnado.mylittleagentworld.agent.dto.NewsMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,14 @@ public class AgentProducer {
                     message.getNewsId(), e.getMessage(), e);
             throw new RuntimeException("Failed to send news to RabbitMQ", e);
         }
+    }
+
+    public void sendAgentMessageRequestToAi(AgentDto agentDto) {
+        rabbitTemplate.convertAndSend(
+                agentExchange,
+                agentAllAgentDataRoutingKey,
+                agentDto
+        );
     }
 
 }

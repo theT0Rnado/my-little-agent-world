@@ -12,7 +12,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgentFromAiDto {
+public class AgentDto {
 
     private String name;
     private String personality;

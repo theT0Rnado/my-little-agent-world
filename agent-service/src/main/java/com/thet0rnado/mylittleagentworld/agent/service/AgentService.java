@@ -1,9 +1,8 @@
 package com.thet0rnado.mylittleagentworld.agent.service;
 
-import com.thet0rnado.mylittleagentworld.agent.dto.AgentFromAiDto;
+import com.thet0rnado.mylittleagentworld.agent.dto.AgentDto;
 import com.thet0rnado.mylittleagentworld.agent.dto.AgentListFromAiMessage;
 import com.thet0rnado.mylittleagentworld.agent.entity.Agent;
-import com.thet0rnado.mylittleagentworld.agent.entity.AgentLink;
 import com.thet0rnado.mylittleagentworld.agent.entity.Plan;
 import com.thet0rnado.mylittleagentworld.agent.entity.Position;
 import com.thet0rnado.mylittleagentworld.agent.entity.Recollection;
@@ -36,7 +35,7 @@ public class AgentService {
 
         Set<Agent> savedAgents = new HashSet<>();
 
-        for (AgentFromAiDto dto : message.getAgents()) {
+        for (AgentDto dto : message.getAgents()) {
             try {
                 Agent agent = buildAgent(dto);
                 Agent saved = agentRepository.save(agent);
@@ -50,7 +49,7 @@ public class AgentService {
         log.info("✅ Создано агентов: {}/{}", savedAgents.size(), message.getAgents().size());
     }
 
-    private Agent buildAgent(AgentFromAiDto dto) {
+    private Agent buildAgent(AgentDto dto) {
         // Сначала создаём агента без связей чтобы получить managed entity
         Agent agent = Agent.builder()
                 .name(dto.getName())
