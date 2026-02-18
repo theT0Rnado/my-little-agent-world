@@ -46,7 +46,7 @@ public class AgentProducer {
     public void sendAgentMessageRequestToAi(AgentDto agentDto) {
         rabbitTemplate.convertAndSend(
                 agentExchange,
-                agentAllAgentDataRoutingKey,
+                agentMessageRoutingKey,
                 agentDto
         );
     }
