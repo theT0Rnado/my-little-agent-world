@@ -16,7 +16,7 @@ public class AgentConsumer {
     private AgentService agentService;
     private AgentProducer agentProducer;
 
-    @RabbitListener(queues = "${rabbitmq.queue.agent.all.agent.data.from.ai}")
+    @RabbitListener(queues = "${rabbitmq.queue.agent-all-agent-data-from-ai}")
     public void startCreatingAgents(AgentListFromAiMessage message) {
         log.info("📨 Получен список агентов от AI: {} агентов",
                 message.getAgents() != null ? message.getAgents().size() : 0);

@@ -17,10 +17,10 @@ public class AgentProducer {
     @Value("${rabbitmq.exchange.agent}")
     private String agentExchange;
 
-    @Value("${rabbitmq.routing-key.agent.all.agent.data}")
+    @Value("${rabbitmq.routing-key.agent-all-agent-data}")
     private String agentAllAgentDataRoutingKey;
 
-    @Value("${rabbitmq.routing-key.agent.message}")
+    @Value("${rabbitmq.routing-key.agent-message}")
     private String agentMessageRoutingKey;
 
     public void sendNewsWithCreatingAgentsRequestToAi(NewsMessage message) {
