@@ -5,7 +5,6 @@ from config import settings
 from models import ActionRequest, ActionResult
 from llm.client import llm_client
 from llm.prompts import REFLECTION_PROMPT, PLAN_PROMPT, ACTION_PROMPT
-from memory.chroma_service import chroma_service
 
 logger = logging.getLogger(__name__)
 
@@ -46,13 +45,8 @@ class RabbitMQConsumer:
                 
                 logger.info(f"Processing action for agent: {request.agent_id}")
                 
-                # Retrieve memories
-                memories = await chroma_service.retrieve_memories(
-                    request.agent_id, 
-                    request.current_context, 
-                    limit=5
-                )
-                memories_text = "\n".join(memories) if memories else "Нет воспоминаний"
+                # Без ChromaDB - используем пустые воспоминания
+                memories_text = "Нет воспоминаний"
                 
                 # Reflection
                 reflection_prompt = REFLECTION_PROMPT.format(
@@ -69,12 +63,6 @@ class RabbitMQConsumer:
                 # Action
                 action_prompt = ACTION_PROMPT.format(plan=plan)
                 action = await llm_client.generate(action_prompt, max_tokens=150)
-                
-                # Save to memory
-                await chroma_service.add_memory(
-                    request.agent_id,
-                    f"Context: {request.current_context}. Action: {action}"
-                )
                 
                 result = ActionResult(
                     agent_id=request.agent_id,

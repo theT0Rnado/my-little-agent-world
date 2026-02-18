@@ -14,8 +14,9 @@ class WebSocketService {
       return;
     }
 
+    // API Gateway на порту 8000, не 8080!
     this.client = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      webSocketFactory: () => new SockJS('http://localhost:8000/ws'),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,

@@ -1,7 +1,9 @@
 import { QueryClient } from '@tanstack/react-query';
 import type { Agent, Event } from '@/types';
 
-const API_BASE = 'http://localhost:8080'; // API Gateway
+// Используем относительные пути - Vite прокси перенаправит на нужные сервисы
+// /api/agent → http://localhost:8081/api/agent
+// /api/v1/news → http://localhost:8082/api/v1/news
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,7 +39,8 @@ export const api = {
   
   async getAgents(): Promise<BackendAgent[]> {
     try {
-      const response = await fetch(`${API_BASE}/agents`);
+      // Через Vite proxy → Agent Service (8081)
+      const response = await fetch('/api/agent');
       if (!response.ok) throw new Error('Failed to fetch agents');
       return response.json();
     } catch (error) {
@@ -48,7 +51,8 @@ export const api = {
 
   async getAgent(id: string): Promise<BackendAgent> {
     try {
-      const response = await fetch(`${API_BASE}/agent/${id}`);
+      // Через Vite proxy → Agent Service (8081)
+      const response = await fetch(`/api/agent/${id}`);
       if (!response.ok) throw new Error('Failed to fetch agent');
       return response.json();
     } catch (error) {
@@ -57,15 +61,30 @@ export const api = {
     }
   },
 
-  // ========== NEWS ==========
+  // ========== NEWS (World Service) ==========
   
   async getNews(): Promise<BackendNews[]> {
     try {
-      const response = await fetch(`${API_BASE}/news`);
+      // Через Vite proxy → World Service (8082)
+      const response = await fetch('/api/v1/news');
+      if (!response.ok) throw new Error('Failed to fetch news');
+      const news = await response.json();
+      console.log('📰 Fetched news from world-service:', news.length);
+      return news;
+    } catch (error) {
+      console.error('❌ Error fetching news:', error);
+      throw error;
+    }
+  },
+
+  async getNewsById(id: number): Promise<BackendNews> {
+    try {
+      // Через Vite proxy → World Service (8082)
+      const response = await fetch(`/api/v1/news/${id}`);
       if (!response.ok) throw new Error('Failed to fetch news');
       return response.json();
     } catch (error) {
-      console.error('❌ Error fetching news:', error);
+      console.error(`❌ Error fetching news ${id}:`, error);
       throw error;
     }
   },
@@ -74,7 +93,8 @@ export const api = {
   
   async sendMessageToAgent(agentId: string, message: string): Promise<void> {
     try {
-      const response = await fetch(`${API_BASE}/agent/${agentId}/message`, {
+      // Через Vite proxy → Agent Service (8081)
+      const response = await fetch(`/api/agent/${agentId}/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message }),
@@ -119,11 +139,16 @@ export const mappers = {
 
   // Маппинг новости в событие
   mapNewsToEvent(news: BackendNews): Event {
+    // Проверка что новость не пустая
+    if (!news.content || news.content.trim() === '') {
+      console.warn('⚠️ Empty news content detected:', news);
+    }
+    
     return {
       id: `news-${news.id}`,
       timestamp: new Date(news.createdAt).getTime(),
       type: 'global',
-      message: news.content,
+      message: news.content ? `🌍 ${news.content}` : '🌍 [Пустая новость]',
     };
   },
 };

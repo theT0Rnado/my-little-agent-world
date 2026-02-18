@@ -27,11 +27,13 @@ body {
 
 /* Cyber glow effects */
 .glow-cyan {
-  box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+  transition: box-shadow 0.3s ease;
 }
 
 .glow-cyan-strong {
-  box-shadow: 0 0 20px rgba(120, 120, 120, 0.6);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3);
+  border-color: rgba(6, 182, 212, 0.5) !important;
 }
 
 /* Scrollbar styling */

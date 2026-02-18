@@ -6,7 +6,7 @@ celery_app = Celery(
     'ai_service',
     broker=f'amqp://{settings.rabbitmq_user}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:{settings.rabbitmq_port}//',
     backend='rpc://',  # RPC backend (результаты через RabbitMQ)
-    include=['tasks.news_generator']
+    include=['tasks.news_generator', 'tasks.agent_generator']
 )
 
 # Конфигурация
@@ -21,10 +21,12 @@ celery_app.conf.update(
     worker_prefetch_multiplier=1,
 )
 
-# Периодические задачи (каждую минуту)
+# Периодические задачи
 celery_app.conf.beat_schedule = {
-    'generate-news-every-minute': {
+    'generate-news-every-30-seconds': {
         'task': 'tasks.news_generator.generate_periodic_news',
-        'schedule': 60.0,  # каждые 60 секунд
+        'schedule': 30.0,  # каждые 30 секунд
     },
+    # Генерация агентов убрана из периодических задач
+    # Агенты создаются только при старте, если их нет
 }
