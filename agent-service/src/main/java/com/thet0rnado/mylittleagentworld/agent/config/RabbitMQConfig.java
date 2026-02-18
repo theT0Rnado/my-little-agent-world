@@ -27,7 +27,7 @@ class RabbitMQConfig {
     @Value("${rabbitmq.queue.agent-all-agent-data-from-ai}")
     private String agentAllAgentDataFromAiQueue;
 
-    @Value("${rabbitmq.queue.agent-message-from.-ai}")
+    @Value("${rabbitmq.queue.agent-message-from-ai}")
     private String agentMessageFromAiQueue;
 
     @Value("${rabbitmq.queue.news-from-ai}")
