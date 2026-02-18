@@ -18,9 +18,7 @@ export async function fetchTopics() {
 }
 
 export async function startConversation(topic) {
-  const res = await fetch(`${AI_URL}?topic=${topic}`, {
-    method: 'POST',
-  })
+  const res = await fetch(`${AI_URL}?topic=${topic}`, { method: 'POST' })
   if (!res.ok) throw new Error(`Conversation failed: ${res.status}`)
   return res.json()
 }
@@ -28,17 +26,6 @@ export async function startConversation(topic) {
 export async function fetchConversations() {
   const res = await fetch(`${WORLD_URL}/conversations`)
   if (!res.ok) throw new Error(`Conversations fetch failed: ${res.status}`)
-  return res.json()
-}
-
-// ─── React to news (агенты реагируют на текст пользователя) ──
-export async function reactToNews(content) {
-  const res = await fetch(`${AI_URL}/react-to-news`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content }),
-  })
-  if (!res.ok) throw new Error(`React to news failed: ${res.status}`)
   return res.json()
 }
 
@@ -55,6 +42,7 @@ export async function fetchNewsById(id) {
   return res.json()
 }
 
+// ✅ Исправлено: обрабатываем пустой ответ (204 No Content)
 export async function submitNews(content) {
   const res = await fetch(`${WORLD_URL}/news`, {
     method: 'POST',
@@ -62,6 +50,24 @@ export async function submitNews(content) {
     body: JSON.stringify({ content }),
   })
   if (!res.ok) throw new Error(`Submit news failed: ${res.status}`)
+  // Если сервер вернул пустой body — не парсим JSON
+  const text = await res.text()
+  if (!text) return null
+  try {
+    return JSON.parse(text)
+  } catch {
+    return null
+  }
+}
+
+// ─── React to News (агенты реагируют на новость) ──────────
+export async function reactToNews(content) {
+  const res = await fetch(`${AI_URL}/react-to-news`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content }),
+  })
+  if (!res.ok) throw new Error(`React to news failed: ${res.status}`)
   return res.json()
 }
 
