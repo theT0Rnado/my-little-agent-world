@@ -148,4 +148,5 @@ public class AgentService {
         log.info("✅ Новость сохранена с ID: {}, агент ID: {}",
                 savedMessage.getId(), savedAgent.getId());
     }
+
 }
